@@ -1,7 +1,7 @@
 import kotlin.random.Random
 
 private const val MY_LIST_ID = 13
-private const val DATA_SIZE = 1000L
+private const val DATA_SIZE = 10_000L
 
 fun getListOfRandomNumbers(): MutableList<Int> {
     val rawData = mutableListOf<Int>()

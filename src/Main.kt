@@ -1,37 +1,33 @@
-import model.journal.Journal
-import java.util.*
+import domain.BinaryTreeSorter
+import domain.MergeSorter
+import domain.QuickSorter
+import domain.Sorter
+import kotlin.system.measureTimeMillis
 
 fun main() {
-    val scanner = Scanner(System.`in`)
-    val journal = Journal(scanner)
-    printStudents(journal)
+    val data = getListOfRandomNumbers()
+    println("Initial data: $data")
 
-    var input = ""
     while (true) {
-        println(
-            "Input 0 to use previous method\n" +
-                    "     1 to sort by surname\n" +
-                    "     2 to sort by birthDate\n" +
-                    "     3 to sort by rating\n" +
-                    "     'stop' to stop the app"
-        )
-        input = scanner.nextLine()
-
-        if (input == "stop")
-            break
-        if (input.matches(Regex("[0123]"))) {
-            journal.sort(input.toInt())
-            printStudents(journal)
-        } else {
-            println("Invalid input, please try again")
+        when (chooseSorter()) {
+            "1" -> measureSorter(BinaryTreeSorter(), data)
+            "2" -> measureSorter(QuickSorter(), data)
+            "3" -> measureSorter(MergeSorter(), data)
+            else -> break
         }
     }
-
 }
 
-private fun printStudents(journal: Journal) {
-    println("\nStudents:")
-    journal.students.forEach {
-        println(it)
+private fun chooseSorter(): String? {
+    println("Choose sorting method( 1-for binary search tree, 2-for quick sort, 3-for merge sort, anything else to exit)")
+    return readLine()
+}
+
+private fun measureSorter(sorter: Sorter, data: MutableList<Int>) =
+    measureTimeMillis {
+        println("\n Measuring ${sorter::class.java.name}")
+        val sortedList = sorter.sort(data)
+        println("Sorted list: [${sortedList?.get(0)},${sortedList?.get(1)}...${sortedList?.get(sortedList.lastIndex)}]")
+    }.let {
+        println("\n Execution time: $it ms")
     }
-}

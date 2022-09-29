@@ -1,14 +1,19 @@
-package model.journal
+package domain
 
 import swap
 
-class InsertSorter<T> {
+class InsertSorter: Sorter {
 
-    /**sorts the given list via Insert Method in ascending order via swapping every element with his left neighbour until it less than it
-     * @param [comparator] should return true if [v1] greater than [v2] otherwise false (invert to sort in descending order)
+    companion object{
+        const val name = "domain.InsertSorter"
+    }
+
+    /**
+     * Insert Method
+     * sorts the given list in ascending order via swapping every element with his left neighbour until it less than it
      *@return list sorted in ascending order
      */
-    fun sort(list: List<T>, comparator: (v1: T, v2: T) -> Boolean): List<T> {
+    override fun sort(list: List<Int>): List<Int> {
         val result = list.toMutableList()
         result.forEachIndexed { id, value ->
 
@@ -16,7 +21,7 @@ class InsertSorter<T> {
 
             if (id > 0) {
                 var idCounter = id
-                while (comparator.invoke(list[idCounter - 1], list[idCounter])) {
+                while (result[idCounter - 1] > value) {
                     result.swap(idCounter - 1, idCounter)
                     if (idCounter == 1)
                         break
