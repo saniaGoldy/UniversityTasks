@@ -1,24 +1,37 @@
-import kotlin.random.Random
-import kotlin.system.measureTimeMillis
+import model.journal.Journal
+import java.util.*
 
 fun main() {
-    val data = getListOfRandomNumbers()
-    println("Initial data: $data")
+    val scanner = Scanner(System.`in`)
+    val journal = Journal(scanner)
+    printStudents(journal)
 
-    measureSorter(SelectSorter(), data)
-    measureSorter(BubbleSorter(), data)
-    measureSorter(ShakerSorter(), data)
-    measureSorter(InsertSorter(), data)
+    var input = ""
+    while (true) {
+        println(
+            "Input 0 to use previous method\n" +
+                    "     1 to sort by surname\n" +
+                    "     2 to sort by birthDate\n" +
+                    "     3 to sort by rating\n" +
+                    "     'stop' to stop the app"
+        )
+        input = scanner.nextLine()
+
+        if (input == "stop")
+            break
+        if (input.matches(Regex("[0123]"))) {
+            journal.sort(input.toInt())
+            printStudents(journal)
+        } else {
+            println("Invalid input, please try again")
+        }
+    }
+
 }
 
-private fun measureSorter(sorter: Sorter, data: MutableList<Int>) {
-    measureTimeMillis {
-        println("\n Measuring ${sorter::class.java.name}")
-        val sortedList = sorter.sort(data)
-        println("Sorted list: [${sortedList?.get(0)},${sortedList?.get(1)}...${sortedList?.get(sortedList.lastIndex)}]")
-    }.let {
-        println("\n Execution time: $it ms")
+private fun printStudents(journal: Journal) {
+    println("\nStudents:")
+    journal.students.forEach {
+        println(it)
     }
 }
-
-
