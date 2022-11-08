@@ -50,7 +50,7 @@ public class MainScreen implements ActionListener {
     private final Font font;
     private final Font textFont;
 
-    public MainScreen(Calculator calculator) {
+    private MainScreen(Calculator calculator) {
         frame = new JFrame("Calculator PH");
 
         this.calculator = calculator;
@@ -304,5 +304,11 @@ public class MainScreen implements ActionListener {
         } else {
             text.setText(Double.toString(num));
         }
+    }
+
+    public static MainScreen getInitializedInstance(Calculator calculator){
+        MainScreen screen = new MainScreen(calculator);
+        screen.init();
+        return screen;
     }
 }

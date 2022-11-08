@@ -9,8 +9,7 @@ public class Main {
     private static void startCalculator() {
         Calculator calculator = new Calculator();
         try {
-            MainScreen ui = new MainScreen(calculator);
-            ui.init();
+            MainScreen.getInitializedInstance(calculator);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
