@@ -306,7 +306,7 @@ public class MainScreen implements ActionListener {
         }
     }
 
-    public static MainScreen getInitializedInstance(Calculator calculator){
+    public static MainScreen getInitializedInstance(Calculator calculator) {
         MainScreen screen = new MainScreen(calculator);
         screen.init();
         return screen;
