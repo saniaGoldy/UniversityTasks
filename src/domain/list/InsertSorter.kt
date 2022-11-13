@@ -1,6 +1,8 @@
-package utils
+package domain.list
 
 import swap
+
+typealias Comparator<T> = (v1: T, v2: T) -> Boolean
 
 class InsertSorter<T> {
 
@@ -8,9 +10,9 @@ class InsertSorter<T> {
      * @param [comparator] should return true if [v1] greater than [v2] otherwise false (invert to sort in descending order)
      *@return list sorted in ascending order
      */
-    fun sort(list: List<T>, comparator: (v1: T, v2: T) -> Boolean): List<T> {
+    fun sort(list: List<T>, comparator: Comparator<T>): List<T> {
         val result = list.toMutableList()
-        result.forEachIndexed { id, value ->
+        result.forEachIndexed { id, _ ->
 
             //println("Step result: $result")
 

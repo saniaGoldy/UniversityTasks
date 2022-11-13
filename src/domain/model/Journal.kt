@@ -1,26 +1,25 @@
 package domain.model
 
+import domain.list.MyList
 import runUntilSucceeds
-import utils.InsertSorter
 import java.util.*
 
 const val STUDENTS_AMOUNT = 6
 
-class Journal(private val scanner: Scanner) {
+class Journal(listImpl: MyList<Student>) {
 
-    private var _students = mutableListOf<Student>()
-    val students: List<Student> get() = _students
+    private val _students = listImpl
+    val students: List<Student> get() = _students.elements
 
-    private val sorter = InsertSorter<Student>()
 
-    init {
-        readStudents()
+    fun initialize(scanner: Scanner) {
+        readStudents(scanner)
     }
 
-    private fun readStudents() {
+    private fun readStudents(scanner: Scanner) {
         var i = 0
         while (i < STUDENTS_AMOUNT) {
-            val student = runUntilSucceeds(i + 1) { readStudent(it) }
+            val student = runUntilSucceeds(i + 1) { readStudent(it, scanner) }
             if (students.contains(student)) {
                 println("\nThis student already exists\n")
             } else {
@@ -30,7 +29,7 @@ class Journal(private val scanner: Scanner) {
         }
     }
 
-    private fun readStudent(studentId: Int): Student {
+    private fun readStudent(studentId: Int, scanner: Scanner): Student {
 
         println("Input student $studentId sheetId: ")
         val sheetId = scanner.nextLine().toInt()
@@ -38,14 +37,14 @@ class Journal(private val scanner: Scanner) {
         println("Input student $studentId surname: ")
         val surname = scanner.nextLine()
 
-        val birthDate = runUntilSucceeds(studentId) { id -> readDate(id) }
+        val birthDate = runUntilSucceeds(studentId) { id -> readDate(id, scanner) }
 
-        val grades = runUntilSucceeds(studentId) { id -> readGrades(id) }
+        val grades = runUntilSucceeds(studentId) { id -> readGrades(id, scanner) }
 
         return Student(sheetId, surname, birthDate, grades)
     }
 
-    private fun readDate(studentId: Int): MyDate {
+    private fun readDate(studentId: Int, scanner: Scanner): MyDate {
         println("Input $studentId student birth date: ")
 
         println("Input date: ")
@@ -60,7 +59,7 @@ class Journal(private val scanner: Scanner) {
         return MyDate(Date(year, month, date))
     }
 
-    private fun readGrades(studentId: Int): MutableMap<Subject, Int> {
+    private fun readGrades(studentId: Int, scanner: Scanner): MutableMap<Subject, Int> {
         val grades = mutableMapOf<Subject, Int>()
         println("Input student $studentId grades")
         Subject.values().forEach {
@@ -109,20 +108,20 @@ class Journal(private val scanner: Scanner) {
     }
 
     private fun sortByDate() {
-        _students = sorter.sort(students) { student1, student2 ->
+        _students.sort { student1, student2 ->
             student1.birthDate.compare(student2.birthDate) == 1
-        } as MutableList<Student>
+        }
     }
 
     private fun sortByRating() {
-        _students = sorter.sort(students) { student1, student2 ->
+        _students.sort { student1, student2 ->
             student1.rating > student2.rating
-        } as MutableList<Student>
+        }
     }
 
     private fun sortBySurname() {
-        _students = sorter.sort(students) { student1, student2 ->
+        _students.sort { student1, student2 ->
             student1.surname > student2.surname
-        } as MutableList<Student>
+        }
     }
 }

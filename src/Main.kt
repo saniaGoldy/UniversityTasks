@@ -1,12 +1,27 @@
-import model.journal.Journal
+import domain.list.MyArrayList
+import domain.model.Journal
 import java.util.*
+
+/**
+ * 0 to use previous method
+ *
+ * 1 to sort by surname
+ *
+ * 2 to sort by birthDate
+ *
+ * 3 to sort by rating
+ */
+private const val SortingOptionsRegex = "\"[0123]\""
 
 fun main() {
     val scanner = Scanner(System.`in`)
-    val journal = Journal(scanner)
+
+    val journal = Journal(MyArrayList())
+    journal.initialize(scanner)
+
     printStudents(journal)
 
-    var input = ""
+    var input: String
     while (true) {
         println(
             "Input 0 to use previous method\n" +
@@ -19,7 +34,7 @@ fun main() {
 
         if (input == "stop")
             break
-        if (input.matches(Regex("[0123]"))) {
+        if (input.matches(Regex(SortingOptionsRegex))) {
             journal.sort(input.toInt())
             printStudents(journal)
         } else {
