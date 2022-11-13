@@ -1,4 +1,3 @@
-import domain.list.MyArrayList
 import domain.model.Journal
 import domain.model.JournalFactory
 import java.util.*
