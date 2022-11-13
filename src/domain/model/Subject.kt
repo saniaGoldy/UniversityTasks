@@ -1,4 +1,4 @@
-package model
+package domain.model
 
 enum class Subject {
     Math,

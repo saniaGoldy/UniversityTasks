@@ -1,9 +1,7 @@
-package model.journal
+package domain.model
 
-import model.MyDate
-import model.Student
-import model.Subject
 import runUntilSucceeds
+import utils.InsertSorter
 import java.util.*
 
 const val STUDENTS_AMOUNT = 6

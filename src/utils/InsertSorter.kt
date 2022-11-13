@@ -1,4 +1,4 @@
-package model.journal
+package utils
 
 import swap
 
