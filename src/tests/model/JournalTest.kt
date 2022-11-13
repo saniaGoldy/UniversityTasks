@@ -1,5 +1,7 @@
-package domain.model
+package tests.model
 
+import domain.model.Journal
+import domain.model.JournalFactory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import utils.sampleStudents
