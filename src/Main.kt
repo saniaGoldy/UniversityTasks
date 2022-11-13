@@ -1,5 +1,6 @@
 import domain.list.MyArrayList
 import domain.model.Journal
+import domain.model.JournalFactory
 import java.util.*
 
 /**
@@ -11,13 +12,12 @@ import java.util.*
  *
  * 3 to sort by rating
  */
-private const val SortingOptionsRegex = "\"[0123]\""
+private const val SortingOptionsRegex = "[0123]"
 
 fun main() {
     val scanner = Scanner(System.`in`)
 
-    val journal = Journal(MyArrayList())
-    journal.initialize(scanner)
+    val journal = JournalFactory.getSampleJournal()
 
     printStudents(journal)
 

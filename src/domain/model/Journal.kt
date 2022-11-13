@@ -1,8 +1,6 @@
 package domain.model
 
 import domain.list.MyList
-import runUntilSucceeds
-import java.util.*
 
 const val STUDENTS_AMOUNT = 6
 
@@ -10,66 +8,6 @@ class Journal(listImpl: MyList<Student>) {
 
     private val _students = listImpl
     val students: List<Student> get() = _students.elements
-
-
-    fun initialize(scanner: Scanner) {
-        readStudents(scanner)
-    }
-
-    private fun readStudents(scanner: Scanner) {
-        var i = 0
-        while (i < STUDENTS_AMOUNT) {
-            val student = runUntilSucceeds(i + 1) { readStudent(it, scanner) }
-            if (students.contains(student)) {
-                println("\nThis student already exists\n")
-            } else {
-                _students.add(student)
-                i++
-            }
-        }
-    }
-
-    private fun readStudent(studentId: Int, scanner: Scanner): Student {
-
-        println("Input student $studentId sheetId: ")
-        val sheetId = scanner.nextLine().toInt()
-
-        println("Input student $studentId surname: ")
-        val surname = scanner.nextLine()
-
-        val birthDate = runUntilSucceeds(studentId) { id -> readDate(id, scanner) }
-
-        val grades = runUntilSucceeds(studentId) { id -> readGrades(id, scanner) }
-
-        return Student(sheetId, surname, birthDate, grades)
-    }
-
-    private fun readDate(studentId: Int, scanner: Scanner): MyDate {
-        println("Input $studentId student birth date: ")
-
-        println("Input date: ")
-        val date = scanner.nextLine().toInt()
-
-        println("Input month: ")
-        val month = scanner.nextLine().toInt()
-
-        println("Input year: ")
-        val year = scanner.nextLine().toInt()
-
-        return MyDate(Date(year, month, date))
-    }
-
-    private fun readGrades(studentId: Int, scanner: Scanner): MutableMap<Subject, Int> {
-        val grades = mutableMapOf<Subject, Int>()
-        println("Input student $studentId grades")
-        Subject.values().forEach {
-            println("Input grade for $it")
-            val grade = scanner.nextLine().toInt()
-            grades[it] = grade
-        }
-        return grades
-    }
-
 
     private var lastSortMethodId: Int? = null
 

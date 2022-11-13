@@ -2,6 +2,7 @@ package domain.list
 
 import swap
 
+/** comparator should return true if [v1] greater than [v2] otherwise false (invert to sort in descending order) */
 typealias Comparator<T> = (v1: T, v2: T) -> Boolean
 
 class InsertSorter<T> {

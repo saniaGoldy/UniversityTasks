@@ -2,15 +2,20 @@ package domain.list
 
 class MyLinkedList<T> : MyList<T>() {
 
-    private var head: Node? = null
-    private var tail: Node? = head
+    private var _head: Node? = null
+    val head: Node?
+        get() = _head
+
+    private var _tail: Node? = null
+    val tail: Node?
+        get() = _tail
 
 
     override val elements: List<T>
         get() {
-            return if (head != null) {
+            return if (_head != null) {
                 val result = mutableListOf<T>()
-                var currNode = head
+                var currNode = _head
 
                 while (true) {
                     currNode!!.value?.let { result.add(it) }
@@ -26,26 +31,42 @@ class MyLinkedList<T> : MyList<T>() {
         }
 
     override fun clear() {
-        head?.clearChildren()
+        _head?.clearChildren()
+        deletePointers()
+    }
+
+    private fun deletePointers() {
+        _head = null
+        _tail = null
     }
 
     override fun add(element: T) {
         val newNode = Node(element)
-        tail?.add(newNode) ?: init(newNode)
+        if (_head != null && _tail != null) {
+            _tail!!.add(newNode)
+            _tail = newNode
+        } else {
+            init(newNode)
+        }
     }
 
     private fun init(newNode: Node) {
-        head = newNode
-        //tail = head
+        _head = newNode
+        _tail = newNode
     }
 
     fun addOnStart(element: T) {
         val newNode = Node(element)
-        head?.let { newNode.add(it) } ?: init(newNode)
+        if (_head != null && _tail != null) {
+            newNode.add(_head!!)
+            _head = newNode
+        } else {
+            init(newNode)
+        }
     }
 
     override fun isEmpty(): Boolean {
-        return head == null
+        return _head == null
     }
 
     inner class Node(var value: T?, var nextNode: Node? = null) {
@@ -53,7 +74,7 @@ class MyLinkedList<T> : MyList<T>() {
             nextNode = newNode
         }
 
-        fun hasNext(): Boolean = nextNode == null
+        fun hasNext(): Boolean = nextNode != null
 
         fun clearChildren() {
             nextNode?.clearChildren()
