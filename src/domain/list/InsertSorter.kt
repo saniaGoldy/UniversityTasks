@@ -19,7 +19,7 @@ class InsertSorter<T> {
 
             if (id > 0) {
                 var idCounter = id
-                while (comparator.invoke(list[idCounter - 1], list[idCounter])) {
+                while (comparator.invoke(result[idCounter - 1], result[idCounter])) {
                     result.swap(idCounter - 1, idCounter)
                     if (idCounter == 1)
                         break

@@ -63,8 +63,8 @@ internal class JournalTest {
         assert(
             journal.students == listOf(
                 sampleStudents[1],
-                sampleStudents[0],
-                sampleStudents[2]
+                sampleStudents[2],
+                sampleStudents[0]
             )
         )
     }
