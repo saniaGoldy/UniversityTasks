@@ -1,9 +1,13 @@
 package domain.list
 
-class MyArrayList<T> : MyList<T>() {
+class MyArrayList<T>(elements: Collection<T> = listOf()) : MyList<T>() {
     private var _elements = mutableListOf<T>()
 
-    override val elements: List<T>
+    init {
+        addAll(elements)
+    }
+
+    override val toList: List<T>
         get() = _elements
 
     override fun clear() = _elements.clear()
@@ -35,4 +39,14 @@ class MyArrayList<T> : MyList<T>() {
     override fun add(element: T) {
         _elements.add(element)
     }
+
+    override val size: Int
+        get() = _elements.size
+
+    override fun contains(element: T): Boolean = toList.contains(element)
+
+    override fun containsAll(elements: Collection<T>): Boolean = elements.containsAll(elements)
+
+    override fun iterator(): Iterator<T> = _elements.iterator()
+
 }

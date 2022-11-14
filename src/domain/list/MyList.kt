@@ -1,12 +1,18 @@
 package domain.list
 
-abstract class MyList<T> {
+abstract class MyList<T>(elements: Collection<T> = listOf()) : Collection<T> {
 
     private val sorter = InsertSorter<T>()
 
-    abstract val elements: List<T>
+    private var lastComparator: Comparator<T>? = null
 
-    /** makes the [elements] list empty*/
+    abstract val toList: List<T>
+
+    init {
+        addAll(elements)
+    }
+
+    /** makes the [toList] list empty*/
     abstract fun clear()
 
     /** Adds an element at the back of the list*/
@@ -24,7 +30,7 @@ abstract class MyList<T> {
     }
 
     /** Adds elements at the back of the list*/
-    open fun addAll(elements: List<T>) {
+    fun addAll(elements: Collection<T>) {
         elements.forEach { element -> add(element) }
     }
 
@@ -34,16 +40,30 @@ abstract class MyList<T> {
         addAll(elements)
     }
 
-    open fun sort(comparator: Comparator<T>) {
-        val sortedList = sorter.sort(elements, comparator)
+    open fun sort(comparator: Comparator<T>  /* = (v1: T, v2: T) -> kotlin.Boolean */) {
+        lastComparator = comparator
+        val sortedList = sorter.sort(toList, comparator)
         reset(sortedList)
     }
 
-    open fun isEmpty(): Boolean {
-        return elements.isEmpty()
+    /** Merges [elements] in list using given [comparator] or last used comparator by default.
+     * Adds [elements] in back of the list if [comparator] is not specified and list was never sorted before
+     * */
+    open fun mergeSorting(
+        elements: Collection<T>,
+        comparator: Comparator<T>? /* = (v1: T, v2: T) -> kotlin.Boolean */ = lastComparator
+    ) {
+        addAll(elements)
+        comparator?.let { comp -> sort(comp) }
+    }
+
+    override fun isEmpty(): Boolean {
+        return toList.isEmpty()
     }
 
     override fun toString(): String {
-        return elements.toString()
+        return toList.toString()
     }
+
+
 }

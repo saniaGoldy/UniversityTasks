@@ -7,7 +7,7 @@ const val STUDENTS_AMOUNT = 6
 class Journal(listImpl: MyList<Student>) {
 
     private val _students = listImpl
-    val students: List<Student> get() = _students.elements
+    val students: List<Student> get() = _students.toList
 
     private var lastSortMethodId: Int? = null
 

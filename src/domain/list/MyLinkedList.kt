@@ -1,6 +1,6 @@
 package domain.list
 
-class MyLinkedList<T> : MyList<T>() {
+class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) {
 
     private var _head: Node? = null
     val head: Node?
@@ -11,7 +11,7 @@ class MyLinkedList<T> : MyList<T>() {
         get() = _tail
 
 
-    override val elements: List<T>
+    override val toList: List<T>
         get() {
             return if (_head != null) {
                 val result = mutableListOf<T>()
@@ -69,7 +69,7 @@ class MyLinkedList<T> : MyList<T>() {
         return _head == null
     }
 
-    inner class Node(var value: T?, var nextNode: Node? = null) {
+    inner class Node(var value: T, var nextNode: Node? = null) {
         fun add(newNode: Node) {
             nextNode = newNode
         }
@@ -78,7 +78,53 @@ class MyLinkedList<T> : MyList<T>() {
 
         fun clearChildren() {
             nextNode?.clearChildren()
-            this.value = null
+            nextNode = null
         }
+
+        fun thisOrChildrenContains(element: T): Boolean {
+            val currentNode = this
+            while (true) {
+                return if (currentNode.value == element)
+                    true
+                else {
+                    currentNode.nextNode?.thisOrChildrenContains(element) ?: false
+                }
+            }
+        }
+    }
+
+    override val size: Int
+        get() = toList.size
+
+    override fun contains(element: T): Boolean {
+        return _head?.thisOrChildrenContains(element) ?: false
+    }
+
+    override fun containsAll(elements: Collection<T>): Boolean {
+        var contains = false
+        elements.map {
+            contains = _head?.thisOrChildrenContains(it) ?: false
+        }
+        return contains
+    }
+
+    override fun iterator(): Iterator<T> {
+        return if (!isEmpty()) {
+            object : Iterator<T> {
+                private var currentNode = _head!!
+
+                override fun hasNext(): Boolean {
+                    return currentNode.hasNext()
+                }
+
+                override fun next(): T {
+                    return currentNode.value.also {
+                        if (hasNext())
+                            currentNode = currentNode.nextNode!!
+                    }
+                }
+            }
+        } else
+            toList.iterator()
     }
 }
