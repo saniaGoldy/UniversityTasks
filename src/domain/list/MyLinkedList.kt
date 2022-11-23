@@ -1,17 +1,17 @@
 package domain.list
 
-class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) {
+open class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) {
 
-    private var _head: Node? = null
+    protected var _head: Node? = null
     val head: Node?
         get() = _head
 
-    private var _tail: Node? = null
+    protected var _tail: Node? = null
     val tail: Node?
         get() = _tail
 
 
-    override val toList: List<T>
+    override val asList: List<T>
         get() {
             return if (_head != null) {
                 val result = mutableListOf<T>()
@@ -41,7 +41,7 @@ class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) 
     }
 
     override fun add(element: T) {
-        val newNode = Node(element)
+        val newNode = createNode(element)
         if (_head != null && _tail != null) {
             _tail!!.add(newNode)
             _tail = newNode
@@ -56,7 +56,7 @@ class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) 
     }
 
     fun addOnStart(element: T) {
-        val newNode = Node(element)
+        val newNode = createNode(element)
         if (_head != null && _tail != null) {
             newNode.add(_head!!)
             _head = newNode
@@ -65,11 +65,13 @@ class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) 
         }
     }
 
+    open fun createNode(element: T) = Node(element)
+
     override fun isEmpty(): Boolean {
         return _head == null
     }
 
-    inner class Node(var value: T, var nextNode: Node? = null) {
+    open inner class Node(val value: T, var nextNode: Node? = null) {
         fun add(newNode: Node) {
             nextNode = newNode
         }
@@ -94,7 +96,7 @@ class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) 
     }
 
     override val size: Int
-        get() = toList.size
+        get() = asList.size
 
     override fun contains(element: T): Boolean {
         return _head?.thisOrChildrenContains(element) ?: false
@@ -110,21 +112,27 @@ class MyLinkedList<T>(elements: Collection<T> = listOf()) : MyList<T>(elements) 
 
     override fun iterator(): Iterator<T> {
         return if (!isEmpty()) {
-            object : Iterator<T> {
-                private var currentNode = _head!!
-
-                override fun hasNext(): Boolean {
-                    return currentNode.hasNext()
-                }
-
-                override fun next(): T {
-                    return currentNode.value.also {
-                        if (hasNext())
-                            currentNode = currentNode.nextNode!!
-                    }
-                }
-            }
+            LinkedNodeIterator()
         } else
-            toList.iterator()
+            asList.iterator()
+    }
+
+    open inner class LinkedNodeIterator : Iterator<T> {
+        protected var currentNode = _head!!
+
+        override fun hasNext(): Boolean {
+            return currentNode.hasNext()
+        }
+
+        override fun next(): T {
+            return nextNode().value
+        }
+
+        fun nextNode(): MyLinkedList<T>.Node {
+            return currentNode.also {
+                if (hasNext())
+                    currentNode = currentNode.nextNode ?: throw IllegalArgumentException("Next node is null")
+            }
+        }
     }
 }

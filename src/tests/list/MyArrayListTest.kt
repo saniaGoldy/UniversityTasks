@@ -27,33 +27,33 @@ internal class MyArrayListTest {
     @Test
     fun additionOfElement() {
         list.add(0)
-        assert(list.toList[0] == 0)
+        assert(list.asList[0] == 0)
     }
 
     @Test
     fun elementsReturnsEmptyListWhenNoElementsAdded() {
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
     }
 
     @Test
     fun addingCollectionOfElements() {
         list.addAll(listOf(1, 2, 3))
 
-        assert(list.toList == listOf(1, 2, 3))
+        assert(list.asList == listOf(1, 2, 3))
     }
 
     @Test
     fun addingVarArgOfElements() {
         list.addAll(1, 2, 3)
 
-        assert(list.toList == listOf(1, 2, 3))
+        assert(list.asList == listOf(1, 2, 3))
     }
 
     @Test
     fun clearingTheEmptyList() {
         list.clear()
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
     }
 
@@ -62,7 +62,7 @@ internal class MyArrayListTest {
         list.add(0)
         list.clear()
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
     }
 
@@ -74,14 +74,14 @@ internal class MyArrayListTest {
         }
 
         assert(!list.isEmpty())
-        assert(list.toList == listOf(0, 1, 3))
+        assert(list.asList == listOf(0, 1, 3))
     }
 
     @Test
     fun deletingByIdFromEmptyList() {
         list.delete(position = 0)
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
     }
 
@@ -89,7 +89,7 @@ internal class MyArrayListTest {
     fun deletingByElementFromEmptyList() {
         list.delete(element = 0)
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
     }
 
@@ -98,7 +98,7 @@ internal class MyArrayListTest {
         list.add(0)
         list.delete(position = 0)
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
     }
 
@@ -107,7 +107,7 @@ internal class MyArrayListTest {
         list.add(0)
         list.delete(element = 0)
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
     }
 
@@ -116,7 +116,7 @@ internal class MyArrayListTest {
         list.add(0)
         list.delete(position = 1)
 
-        assert(list.toList == listOf<Int>(0))
+        assert(list.asList == listOf<Int>(0))
         assert(!list.isEmpty())
     }
 
@@ -125,7 +125,7 @@ internal class MyArrayListTest {
         list.add(0)
         list.delete(element = 1)
 
-        assert(list.toList == listOf<Int>(0))
+        assert(list.asList == listOf<Int>(0))
         assert(!list.isEmpty())
     }
 
@@ -136,7 +136,7 @@ internal class MyArrayListTest {
         list.add(3)
         list.delete(position = 2)
 
-        assert(list.toList == listOf(0, 4))
+        assert(list.asList == listOf(0, 4))
     }
 
     @Test
@@ -146,7 +146,7 @@ internal class MyArrayListTest {
         list.add(3)
         list.delete(element = 3)
 
-        assert(list.toList == listOf(0, 4))
+        assert(list.asList == listOf(0, 4))
     }
 
     @Test
@@ -156,7 +156,7 @@ internal class MyArrayListTest {
         list.add(3)
         list.delete(element = 4)
 
-        assert(list.toList == listOf(0, 3))
+        assert(list.asList == listOf(0, 3))
     }
 
     @Test
@@ -166,7 +166,7 @@ internal class MyArrayListTest {
         list.add(3)
         list.delete(position = 1)
 
-        assert(list.toList == listOf(0, 3))
+        assert(list.asList == listOf(0, 3))
     }
 
     @Test
@@ -174,14 +174,14 @@ internal class MyArrayListTest {
         list.addAll(2, 4, 5)
         list.insert(3, 1)
 
-        assert(list.toList == listOf(2, 3, 4, 5))
+        assert(list.asList == listOf(2, 3, 4, 5))
     }
 
     @Test
     fun insertingElementInEmptyList() {
         list.insert(3, 0)
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
     }
 
     @Test
@@ -189,7 +189,7 @@ internal class MyArrayListTest {
         list.addAll(1, 2)
         list.insert(3, 3)
 
-        assert(list.toList == listOf(1, 2))
+        assert(list.asList == listOf(1, 2))
     }
 
     @Test
@@ -197,7 +197,7 @@ internal class MyArrayListTest {
         list.addAll(1, 2, 3)
         list.insert(4, 2)
 
-        assert(list.toList == listOf(1, 2, 4, 3))
+        assert(list.asList == listOf(1, 2, 4, 3))
     }
 
     @Test
@@ -207,7 +207,7 @@ internal class MyArrayListTest {
 
         list.mergeSorting(secondList)
 
-        assert(list.toList == listOf(1, 2, 3, 0, 9, 8))
+        assert(list.asList == listOf(1, 2, 3, 0, 9, 8))
     }
 
     @Test
@@ -220,7 +220,7 @@ internal class MyArrayListTest {
 
         list.mergeSorting(secondList)
 
-        assert(list.toList == listOf(0, 1, 2, 3, 8, 9))
+        assert(list.asList == listOf(0, 1, 2, 3, 8, 9))
     }
 
     @Test
@@ -235,7 +235,7 @@ internal class MyArrayListTest {
             v1 < v2
         }
 
-        assert(list.toList == listOf(9, 8, 3, 2, 1, 0))
+        assert(list.asList == listOf(9, 8, 3, 2, 1, 0))
     }
 
     @Test
@@ -248,6 +248,6 @@ internal class MyArrayListTest {
             v1 < v2
         }
 
-        assert(list.toList == listOf(9, 8, 3, 2, 1, 0))
+        assert(list.asList == listOf(9, 8, 3, 2, 1, 0))
     }
 }

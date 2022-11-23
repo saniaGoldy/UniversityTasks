@@ -5,12 +5,12 @@ import domain.list.MyLinkedList
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class MyLinkedListTest {
+internal open class MyLinkedListTest {
 
-    lateinit var list: MyLinkedList<Int>
+    private lateinit var list: MyLinkedList<Int>
 
     @BeforeEach
-    fun setup() {
+    open fun setup() {
         list = MyLinkedList()
     }
 
@@ -55,28 +55,28 @@ internal class MyLinkedListTest {
 
     @Test
     fun elementsReturnsEmptyListWhenNoElementsAdded() {
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
     }
 
     @Test
     fun addingCollectionOfElements() {
         list.addAll(listOf(1, 2, 3))
 
-        assert(list.toList == listOf(1, 2, 3))
+        assert(list.asList == listOf(1, 2, 3))
     }
 
     @Test
     fun addingVarArgOfElements() {
         list.addAll(1, 2, 3)
 
-        assert(list.toList == listOf(1, 2, 3))
+        assert(list.asList == listOf(1, 2, 3))
     }
 
     @Test
     fun clearingTheEmptyList() {
         list.clear()
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
         assert(list.head == null && list.tail == null)
     }
@@ -86,7 +86,7 @@ internal class MyLinkedListTest {
         list.add(0)
         list.clear()
 
-        assert(list.toList == listOf<Int>())
+        assert(list.asList == listOf<Int>())
         assert(list.isEmpty())
         assert(list.head == null && list.tail == null)
     }
@@ -96,7 +96,7 @@ internal class MyLinkedListTest {
         list.addOnStart(0)
 
         assert(!list.isEmpty())
-        assert(list.toList == listOf(0))
+        assert(list.asList == listOf(0))
         assert(list.head != null && list.tail != null && list.head == list.tail)
         assert(!list.head!!.hasNext())
     }
@@ -107,7 +107,7 @@ internal class MyLinkedListTest {
         list.addOnStart(1)
 
         assert(!list.isEmpty())
-        assert(list.toList == listOf(1, 0))
+        assert(list.asList == listOf(1, 0))
         assert(list.head != null && list.tail != null && list.head != list.tail)
         assert(list.head!!.hasNext())
     }
@@ -121,7 +121,7 @@ internal class MyLinkedListTest {
         }
 
         assert(!list.isEmpty())
-        assert(list.toList == listOf(0, 1, 3))
+        assert(list.asList == listOf(0, 1, 3))
         assert(list.head != null && list.tail != null && list.head != list.tail)
         assert(list.head!!.hasNext())
     }
@@ -133,7 +133,7 @@ internal class MyLinkedListTest {
 
         list.mergeSorting(secondList)
 
-        assert(list.toList == listOf(1, 2, 3, 0, 9, 8))
+        assert(list.asList == listOf(1, 2, 3, 0, 9, 8))
     }
 
     @Test
@@ -146,7 +146,7 @@ internal class MyLinkedListTest {
 
         list.mergeSorting(secondList)
 
-        assert(list.toList == listOf(0, 1, 2, 3, 8, 9))
+        assert(list.asList == listOf(0, 1, 2, 3, 8, 9))
     }
 
     @Test
@@ -161,7 +161,7 @@ internal class MyLinkedListTest {
             v1 < v2
         }
 
-        assert(list.toList == listOf(9, 8, 3, 2, 1, 0))
+        assert(list.asList == listOf(9, 8, 3, 2, 1, 0))
     }
 
     @Test
@@ -174,7 +174,7 @@ internal class MyLinkedListTest {
             v1 < v2
         }
 
-        assert(list.toList == listOf(9, 8, 3, 2, 1, 0))
+        assert(list.asList == listOf(9, 8, 3, 2, 1, 0))
     }
 
 }

@@ -6,13 +6,13 @@ abstract class MyList<T>(elements: Collection<T> = listOf()) : Collection<T> {
 
     private var lastComparator: Comparator<T>? = null
 
-    abstract val toList: List<T>
+    abstract val asList: List<T>
 
     init {
         addAll(elements)
     }
 
-    /** makes the [toList] list empty*/
+    /** makes the [asList] list empty*/
     abstract fun clear()
 
     /** Adds an element at the back of the list*/
@@ -42,7 +42,7 @@ abstract class MyList<T>(elements: Collection<T> = listOf()) : Collection<T> {
 
     open fun sort(comparator: Comparator<T>  /* = (v1: T, v2: T) -> kotlin.Boolean */) {
         lastComparator = comparator
-        val sortedList = sorter.sort(toList, comparator)
+        val sortedList = sorter.sort(asList, comparator)
         reset(sortedList)
     }
 
@@ -57,13 +57,19 @@ abstract class MyList<T>(elements: Collection<T> = listOf()) : Collection<T> {
         comparator?.let { comp -> sort(comp) }
     }
 
+   override fun contains(element: T): Boolean{
+       return this.asList.contains(element)
+   }
+
+    override fun containsAll(elements: Collection<T>): Boolean {
+        return this.asList.containsAll(elements)
+    }
+
     override fun isEmpty(): Boolean {
-        return toList.isEmpty()
+        return asList.isEmpty()
     }
 
     override fun toString(): String {
-        return toList.toString()
+        return asList.toString()
     }
-
-
 }

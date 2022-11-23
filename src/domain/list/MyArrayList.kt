@@ -7,7 +7,7 @@ class MyArrayList<T>(elements: Collection<T> = listOf()) : MyList<T>() {
         addAll(elements)
     }
 
-    override val toList: List<T>
+    override val asList: List<T>
         get() = _elements
 
     override fun clear() = _elements.clear()
@@ -43,7 +43,7 @@ class MyArrayList<T>(elements: Collection<T> = listOf()) : MyList<T>() {
     override val size: Int
         get() = _elements.size
 
-    override fun contains(element: T): Boolean = toList.contains(element)
+    override fun contains(element: T): Boolean = asList.contains(element)
 
     override fun containsAll(elements: Collection<T>): Boolean = elements.containsAll(elements)
 
