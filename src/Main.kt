@@ -1,90 +1,75 @@
-import java.util.*
+class PhraseologicalDictionary {
+    private val dictionary: HashMap<String, MutableList<String>> = HashMap()
 
-class Animal(val name: String, val species: String) {
-    override fun toString(): String {
-        return "$name ($species)"
-    }
-}
-
-class Zoo {
-    private val animals: ArrayList<Animal> = ArrayList()
-
-    fun addAnimal(animal: Animal) {
-        animals.add(animal)
+    fun addPhrase(phrase: String, meaning: String) {
+        val meanings = dictionary.getOrPut(phrase) { mutableListOf() }
+        meanings.add(meaning)
     }
 
-    fun addAnimals(newAnimals: List<Animal>) {
-        animals.addAll(newAnimals)
+    fun removePhrase(phrase: String) {
+        dictionary.remove(phrase)
     }
 
-    fun removeAnimal(animal: Animal) {
-        animals.remove(animal)
+    fun searchPhrase(phrase: String): List<String>? {
+        return dictionary[phrase]
     }
 
-    fun removeAnimals(animalsToRemove: List<Animal>) {
-        animals.removeAll(animalsToRemove)
-    }
-
-    fun searchAnimalByName(name: String): Animal? {
-        for (animal in animals) {
-            if (animal.name == name) {
-                return animal
+    fun replaceMeaning(phrase: String, oldMeaning: String, newMeaning: String): Boolean {
+        val meanings = dictionary[phrase]
+        if (meanings != null) {
+            val index = meanings.indexOf(oldMeaning)
+            if (index != -1) {
+                meanings[index] = newMeaning
+                return true
             }
         }
-        return null
+        return false
     }
 
-    fun searchAnimalsBySpecies(species: String): List<Animal> {
-        val foundAnimals: ArrayList<Animal> = ArrayList()
-        for (animal in animals) {
-            if (animal.species == species) {
-                foundAnimals.add(animal)
+    fun sortDictionaryByPhrase() {
+        val sortedDictionary = dictionary.toSortedMap(compareBy { it })
+        dictionary.clear()
+        dictionary.putAll(sortedDictionary)
+    }
+
+    fun printDictionary() {
+        for ((phrase, meanings) in dictionary) {
+            println("$phrase:")
+            for (meaning in meanings) {
+                println("- $meaning")
             }
-        }
-        return foundAnimals
-    }
-
-    fun sortAnimalsByName() {
-        animals.sortWith(compareBy { it.name })
-    }
-
-    fun sortAnimalsBySpecies() {
-        animals.sortWith(compareBy { it.species })
-    }
-
-    fun printAnimals() {
-        for (animal in animals) {
-            println(animal)
         }
     }
 }
 
 fun main() {
-    val zoo = Zoo()
+    val phraseologicalDictionary = PhraseologicalDictionary()
 
-    val lion = Animal("Leo", "Lion")
-    val elephant = Animal("Ellie", "Elephant")
-    val giraffe = Animal("Gerry", "Giraffe")
+    phraseologicalDictionary.addPhrase("Break a leg", "Good luck")
+    phraseologicalDictionary.addPhrase("Break a leg", "Do well")
+    phraseologicalDictionary.addPhrase("Piece of cake", "Easy task")
+    phraseologicalDictionary.addPhrase("Piece of cake", "Simple")
 
-    zoo.addAnimal(lion)
-    zoo.addAnimals(listOf(elephant, giraffe))
+    phraseologicalDictionary.printDictionary()
 
-    zoo.printAnimals()
-
-    val foundAnimal = zoo.searchAnimalByName("Leo")
-    foundAnimal?.let {
-        println("Found animal: $it")
+    val phrase = "Break a leg"
+    val meanings = phraseologicalDictionary.searchPhrase(phrase)
+    if (meanings != null) {
+        println("Meanings of '$phrase':")
+        for (meaning in meanings) {
+            println("- $meaning")
+        }
     }
 
-    val giraffes = zoo.searchAnimalsBySpecies("Giraffe")
-    println("Giraffes:")
-    for (giraffe in giraffes) {
-        println(giraffe)
+    val replaced = phraseologicalDictionary.replaceMeaning(phrase, "Good luck", "Best wishes")
+    if (replaced) {
+        println("Meaning replaced successfully.")
+    } else {
+        println("Failed to replace meaning.")
     }
 
-    zoo.removeAnimal(lion)
-    zoo.sortAnimalsByName()
+    phraseologicalDictionary.sortDictionaryByPhrase()
 
-    println("After removing and sorting:")
-    zoo.printAnimals()
+    println("Sorted dictionary:")
+    phraseologicalDictionary.printDictionary()
 }
